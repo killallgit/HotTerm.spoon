@@ -10,7 +10,7 @@ local function transformWindow(app)
     local termWindow = app:mainWindow()
     local termFrame = termWindow:screen():frame()
     local w = app:mainWindow()
-    w:setFrame(hs.geometry.rect(termFrame.x, termFrame.y, termFrame.w, termFrame.h / 2),0 )
+    w:setFrame(hs.geometry.rect(termFrame.x, termFrame.y, termFrame.w, termFrame.h-400),0 )
 end
 
 local function showHotWindow(app)
