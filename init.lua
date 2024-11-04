@@ -1,4 +1,4 @@
-local terminalApp = "Alacritty"
+local terminalApp = "org.alacritty"
 
 hs.window.animationDuration = 0
 
@@ -6,14 +6,19 @@ local HotTerm = {}
 
 HotTerm.__index = HotTerm
 
-local function transformWindow(app)    
+local function transformWindow(app)
     local termWindow = app:mainWindow()
     local termFrame = termWindow:screen():frame()
     local w = app:mainWindow()
-    w:setFrame(hs.geometry.rect(termFrame.x, termFrame.y, termFrame.w, termFrame.h-400),0 )
+    w:setFrame(hs.geometry.rect(termFrame.x, termFrame.y, termFrame.w, termFrame.h - 400), 0)
 end
 
 local function showHotWindow(app)
+    local mouseScreen = hs.mouse.getCurrentScreen()
+    if not mouseScreen then
+        hs.alert.show("No mouse screen found for hotkey terminal")
+        return
+    end
     if app and app:isHidden() then
         app:unhide()
     end
@@ -26,8 +31,9 @@ end
 
 function toggleTerminal()
     local app = hs.application.find(terminalApp)
+
     if not app then
-        app = hs.application.open(terminalApp)
+        app = hs.application.open(terminalApp, 5, true)
         showHotWindow(app)
         transformWindow(app)
         return
@@ -41,7 +47,7 @@ function toggleTerminal()
 end
 
 function HotTerm:init()
-    hs.hotkey.bind({ "cmd", "alt"}, "space", toggleTerminal)
+    hs.hotkey.bind({ "cmd", "alt" }, "space", toggleTerminal)
 end
 
 return HotTerm
