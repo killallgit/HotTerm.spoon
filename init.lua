@@ -1,15 +1,15 @@
-local terminalApp = "org.alacritty"
 hs.window.animationDuration = 0
 
 local HotTerm = {}
-
+local terminalApp = "Alacritty"
+local screenHeight = 400
 HotTerm.__index = HotTerm
 
 local function transformWindow(app)
     local mouseScreen = hs.mouse.getCurrentScreen()
     local screenFrame = mouseScreen:frame()
     local termWindow = app:mainWindow()
-    termWindow:setFrame(hs.geometry.rect(screenFrame.x, screenFrame.y, screenFrame.w, screenFrame.h - 400), 0)
+    termWindow:setFrame(hs.geometry.rect(screenFrame.x, screenFrame.y, screenFrame.w, screenFrame.h - screenHeight), 0)
 end
 
 local function showHotWindow(app)
@@ -28,7 +28,7 @@ local function showHotWindow(app)
     app:mainWindow():focus()
 end
 
-function toggleTerminal()
+local function toggleTerminal()
     local app = hs.application.find(terminalApp)
 
     if not app then
