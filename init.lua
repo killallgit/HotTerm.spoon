@@ -1,5 +1,4 @@
 local terminalApp = "org.alacritty"
-
 hs.window.animationDuration = 0
 
 local HotTerm = {}
@@ -7,10 +6,10 @@ local HotTerm = {}
 HotTerm.__index = HotTerm
 
 local function transformWindow(app)
+    local mouseScreen = hs.mouse.getCurrentScreen()
+    local screenFrame = mouseScreen:frame()
     local termWindow = app:mainWindow()
-    local termFrame = termWindow:screen():frame()
-    local w = app:mainWindow()
-    w:setFrame(hs.geometry.rect(termFrame.x, termFrame.y, termFrame.w, termFrame.h - 400), 0)
+    termWindow:setFrame(hs.geometry.rect(screenFrame.x, screenFrame.y, screenFrame.w, screenFrame.h - 400), 0)
 end
 
 local function showHotWindow(app)
