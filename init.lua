@@ -1,21 +1,19 @@
 hs.window.animationDuration = 0
 
 local HotTerm = {}
-local terminalApp = "Alacritty"
-local screenHeight = 400
+local terminalApp = "Kitty"
+local screenHeight = 200
 HotTerm.__index = HotTerm
 
-local function transformWindow(app)
-    local mouseScreen = hs.mouse.getCurrentScreen()
-    local screenFrame = mouseScreen:frame()
+local function transformWindow(app, screen)
+    local screenFrame = screen:frame()
     local termWindow = app:mainWindow()
     termWindow:setFrame(hs.geometry.rect(screenFrame.x, screenFrame.y, screenFrame.w, screenFrame.h - screenHeight), 0)
 end
 
-local function showHotWindow(app)
-    local mouseScreen = hs.mouse.getCurrentScreen()
-    if not mouseScreen then
-        hs.alert.show("No mouse screen found for hotkey terminal")
+local function showHotWindow(app, screen)
+    if not screen then
+        hs.alert.show("No screen found for hotkey terminal")
         return
     end
     if app and app:isHidden() then
@@ -30,19 +28,20 @@ end
 
 local function toggleTerminal()
     local app = hs.application.find(terminalApp)
+    local focusedScreen = hs.screen.mainScreen()  -- Get the focused screen
 
     if not app then
         app = hs.application.open(terminalApp, 5, true)
-        showHotWindow(app)
-        transformWindow(app)
+        showHotWindow(app, focusedScreen)
+        transformWindow(app, focusedScreen)
         return
     end
     if app:isFrontmost() then
         app:hide()
         return
     end
-    showHotWindow(app)
-    transformWindow(app)
+    showHotWindow(app, focusedScreen)
+    transformWindow(app, focusedScreen)
 end
 
 function HotTerm:init()
